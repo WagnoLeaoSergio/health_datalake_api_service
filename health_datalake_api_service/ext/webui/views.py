@@ -1,7 +1,7 @@
 from flask import abort, render_template
 from flask_simplelogin import login_required
 
-from project_name.models import Product
+from health_datalake_api_service.models import Product
 
 
 def index():

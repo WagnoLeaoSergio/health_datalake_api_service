@@ -1,9 +1,9 @@
 import sys
 import pytest
 
-from project_name import create_app
-from project_name.ext.commands import populate_db
-from project_name.ext.database import db
+from health_datalake_api_service import create_app
+from health_datalake_api_service.ext.commands import populate_db
+from health_datalake_api_service.ext.database import db
 
 
 @pytest.fixture(scope="session")
