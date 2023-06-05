@@ -58,6 +58,8 @@ class MeasureResource(Resource):
                     "id": measure.id,
                     "user": measure.user,
                     "date": str(measure.measure_time),
+                    "steps": measure.steps,
+                    "sleep": measure.sleep,
                     "heart": measure.heart_rate,
                     "preassure_high": measure.blood_pressure_high,
                     "preassure_low": measure.blood_pressure_low,
@@ -108,6 +110,8 @@ class MeasureResource(Resource):
             measures_bulk.append(Measure(
                 user=user.id,
                 measure_time=m_date,
+                steps=m_steps,
+                sleep=m_sleep,
                 heart_rate=m_heart,
                 oxygen_saturation=m_oxygen,
                 blood_pressure_high=m_pressure_high,

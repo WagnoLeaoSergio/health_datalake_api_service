@@ -24,6 +24,8 @@ class Measure(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     measure_time = db.Column(db.DateTime, nullable=False)
+    steps = db.Column(db.Integer, nullable=True)
+    sleep = db.Column(db.Integer, nullable=True)
     heart_rate = db.Column(db.Integer, nullable=True)
     oxygen_saturation = db.Column(db.Integer, nullable=True)
     blood_pressure_high = db.Column(db.Integer, nullable=True)
