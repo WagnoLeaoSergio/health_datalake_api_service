@@ -13,7 +13,7 @@ class UserResource(Resource):
         return {
             "username": user.username,
             "email": user.email,
-            "latest_data_request": user.latest_data_request
+            "latest_measure_date": str(user.latest_measure_date)
         }
 
 
@@ -24,23 +24,23 @@ class MeasureResource(Resource):
 
         oldest_measure = Measure.query.order_by(
             Measure.measure_time
-        ).first()
+        ).first().measure_time
         latest_measure = Measure.query.order_by(
             desc(Measure.measure_time)
-        ).first()
+        ).first().measure_time
 
         start_date = request.form.get("start_date")
         end_date = request.form.get("end_date")
 
-        if start_date is not None:
+        if start_date is not None and start_date >= oldest_measure:
             start_date = datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S")
         else:
-            start_date = oldest_measure.measure_time
+            start_date = oldest_measure
 
-        if end_date is not None:
+        if end_date is not None and end_date <= latest_measure:
             end_date = datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S")
         else:
-            end_date = latest_measure.measure_time
+            end_date = latest_measure
 
         if not start_date and not end_date:
             return {}
@@ -61,16 +61,12 @@ class MeasureResource(Resource):
                     "steps": measure.steps,
                     "sleep": measure.sleep,
                     "heart": measure.heart_rate,
-                    "preassure_high": measure.blood_pressure_high,
-                    "preassure_low": measure.blood_pressure_low,
+                    "pressure_high": measure.blood_pressure_high,
+                    "pressure_low": measure.blood_pressure_low,
                     "oxygen": measure.oxygen_saturation
                 }
                 for measure in measures_range
             ]
-
-            user.latest_data_request = Measure.query.order_by(
-                desc(Measure.measure_time)
-            ).first().measure_time
 
             db.session.commit()
 
@@ -119,6 +115,12 @@ class MeasureResource(Resource):
             ))
 
         db.session.add_all(measures_bulk)
+        db.session.commit()
+
+        user.latest_measure_date = Measure.query.order_by(
+            desc(Measure.measure_time)
+        ).first().measure_time
+
         db.session.commit()
 
         return {"OK": True}

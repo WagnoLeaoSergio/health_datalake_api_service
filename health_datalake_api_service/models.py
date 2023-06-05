@@ -16,7 +16,7 @@ class User(db.Model, SerializerMixin):
     username = db.Column(db.String(140))
     email = db.Column(EmailType, nullable=True)
     password = db.Column(db.String(512))
-    latest_data_request = db.Column(db.DateTime, nullable=True)
+    latest_measure_date = db.Column(db.DateTime, nullable=True)
     measures = db.relationship('Measure', backref='users')
 
 
