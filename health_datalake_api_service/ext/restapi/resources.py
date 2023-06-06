@@ -10,10 +10,12 @@ from health_datalake_api_service.models import Product, Measure, User, db
 class UserResource(Resource):
     def get(self, user_name: str):
         user = User.query.filter_by(username=user_name).first() or abort(204)
+        latest_date = str(
+            user.latest_measure_date) if user.latest_measure_date else None
         return {
             "username": user.username,
             "email": user.email,
-            "latest_measure_date": str(user.latest_measure_date)
+            "latest_measure_date": latest_date
         }
 
 
@@ -32,18 +34,21 @@ class MeasureResource(Resource):
         start_date = request.form.get("start_date")
         end_date = request.form.get("end_date")
 
-        if start_date is not None and start_date >= oldest_measure:
-            start_date = datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S")
+        if start_date is not None:
+            start_date = max(
+                datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S"),
+                oldest_measure
+            )
         else:
             start_date = oldest_measure
 
-        if end_date is not None and end_date <= latest_measure:
-            end_date = datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S")
+        if end_date is not None:
+            end_date = min(
+                datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S"),
+                latest_measure
+            )
         else:
             end_date = latest_measure
-
-        if not start_date and not end_date:
-            return {}
 
         measures_range = Measure.query.filter(
             Measure.measure_time >= start_date,
