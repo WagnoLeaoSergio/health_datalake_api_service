@@ -4,7 +4,7 @@ from flask_restful import Resource
 from flask_simplelogin import login_required
 from sqlalchemy import desc
 
-from health_datalake_api_service.models import Product, Measure, User, db
+from health_datalake_api_service.models import Measure, User, db
 
 
 class UserResource(Resource):
@@ -87,8 +87,7 @@ class MeasureResource(Resource):
         batch_file = request.files.get("batch_file")
         measures = request.get_json()
 
-        print(measures)
-
+        # TODO: Implementar registro de medições em batch
         if batch_file is not None:
             return {"OK": True}
 

@@ -2,7 +2,6 @@ import click
 
 from health_datalake_api_service.ext.auth import create_user
 from health_datalake_api_service.ext.database import db
-from health_datalake_api_service.models import Product
 
 
 def create_db():
@@ -16,17 +15,7 @@ def drop_db():
 
 
 def populate_db():
-    """Populate db with sample data"""
-    data = [
-        Product(
-            id=1, name="Ciabatta", price="10", description="Italian Bread"
-        ),
-        Product(id=2, name="Baguete", price="15", description="French Bread"),
-        Product(id=3, name="Pretzel", price="20", description="German Bread"),
-    ]
-    db.session.bulk_save_objects(data)
-    db.session.commit()
-    return Product.query.all()
+    return []
 
 
 def init_app(app):
