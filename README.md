@@ -1,6 +1,6 @@
-# health_datalake_api_service Flask Application
+# health_datalake_api_service
 
-Awesome health_datalake_api_service created by WagnoLeaoSergio
+API para gerenciamento dos dados de sinais vitais usados no sistema implementado no TCC.
 
 ## Installation
 
